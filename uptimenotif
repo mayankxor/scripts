@@ -1,0 +1,5 @@
+#!/bin/sh
+
+UPTIME=$(uptime -p)
+
+notify-send "Another hour passed" "$UPTIME" -t 0

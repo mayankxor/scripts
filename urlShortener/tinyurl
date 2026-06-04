@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+curl -s "https://tinyurl.com/api-create.php?url=$@"
+echo ""

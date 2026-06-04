@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+curl "https://is.gd/create.php?format=simple&url=$@"
+echo ""

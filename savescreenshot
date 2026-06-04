@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+maim --select | xclip -selection clipboard -target image/png
+filename="$HOME/Pictures/screenshots/shot_$(date '+%B-%d-%Y-%H:%M:%S:%N').png"
+xclip -selection clipboard -target image/png -o > "$filename"
+responsedunst=$(dunstify --action="open,open" "Screenshot copied and saved")
+case "$responsedunst" in
+  open)
+    feh "$filename"
+    ;;
+esac

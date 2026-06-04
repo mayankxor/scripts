@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# pad_index.sh — zero-pad numeric prefixes before '~' in filenames
+
+set -e
+
+# === Usage & Argument Check ===
+if [[ $# -lt 1 ]]; then
+  echo "Usage: $0 <pad_width> [--preview|-p]"
+  echo "Example:"
+  echo "  $0 2         # renames files: 1~file.mp4 → 01~file.mp4"
+  echo "  $0 3 --preview  # just shows what would be renamed"
+  exit 1
+fi
+
+pad_width=$1
+preview=false
+
+# === Check for optional --preview flag ===
+if [[ "$2" == "--preview" || "$2" == "-p" ]]; then
+  preview=true
+fi
+
+# === Validate pad width ===
+if ! [[ "$pad_width" =~ ^[0-9]+$ && "$pad_width" -ge 1 ]]; then
+  echo "Error: pad width must be a positive integer."
+  exit 1
+fi
+
+# === Main Loop ===
+shopt -s nullglob  # makes sure loop doesn't run if no matches
+for f in [0-9]*~*.*; do
+  n=${f%%~*}        # number part before ~
+  rest=${f#*~}      # part after ~
+
+  # ensure numeric prefix
+  if ! [[ "$n" =~ ^[0-9]+$ ]]; then
+    echo "Skipping: $f (prefix not numeric)"
+    continue
+  fi
+
+  # build new filename
+  printf -v new "%0${pad_width}d~%s" "$n" "$rest"
+
+  # skip unchanged
+  if [[ "$f" == "$new" ]]; then
+    continue
+  fi
+
+  if $preview; then
+    echo "[PREVIEW] $f → $new"
+  else
+    echo "Renaming: $f → $new"
+    mv -- "$f" "$new"
+  fi
+done
+

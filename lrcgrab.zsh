@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+dest_dir="$HOME/.archive/music/lyrics"
+
+# Create the base destination directory
+mkdir -p "$dest_dir"
+
+# Find all .lrc files
+find "$PWD" -type f \( -name '*.lrc' -o -name '*txt' \) -print0 | while IFS= read -r -d '' file; do
+    # Get the path relative to current directory
+    rel_path="${file#$PWD/}"          # remove leading $PWD/
+    rel_dir="${rel_path:h}"           # directory part of the relative path
+    filename="${rel_path:t}"          # filename part
+
+    # Create corresponding directory in destination
+    mkdir -p "$dest_dir/$rel_dir"
+
+    # Copy file preserving relative path
+    mv "$file" "$dest_dir/$rel_dir/$filename"
+done

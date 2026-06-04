@@ -1,0 +1,8 @@
+#!/usr/bin/env sh 
+maim --select | xclip -selection clipboard -target image/png
+responsedunst=$(dunstify --action="open,open" "Screenshot copied to clipboard")
+case "$responsedunst" in
+  open)
+    xclip -selection clipboard -target image/png -o | feh -
+    ;;
+esac

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+line="$(command ps -ef | awk '{printf "%s ", $2; for(i=8; i<=NF; i++) printf "%s%s", $i, (i<NF ? OFS : ORS)}' | cut -c1-50 | dmenu -p "Select process to kill")"
+ID=$(echo "$line" | awk '{print $1}')
+name=$(echo $line | awk '{for(i=2;i<=NF;i++)printf "%s%s", $i, (i<NF?OFS:ORS)}')
+if kill -9 $ID; then
+  notify-send "$name terminated"
+else
+  notify-send "failed to terminate $name"
+fi

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [ -e /tmp/recpid ]; then
+  PID=$(cat /tmp/recpid)
+  kill -15 "$PID"
+  wait "$PID"
+  rm -rf /tmp/recpid
+  echo "REC " > /tmp/recordicon && pkill -RTMIN+20 dwmblocks
+  notify-send "Recording ended"
+else
+  SOURCE="$(pactl get-default-sink).monitor"
+  setsid ffmpeg -f x11grab -framerate 30 -video_size "$(xdpyinfo | awk '/dimensions/{print $2}')" -i :0.0 -f pulse -i "$SOURCE" -c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -c:a aac -b:a 192k "$HOME/Videos/screenRecordings/video_$(date '+%B-%d-%Y-%H_%M_%S_%N').mkv" &
+  echo $! > /tmp/recpid
+  echo "REC 󰑊" > /tmp/recordicon && pkill -RTMIN+20 dwmblocks
+  notify-send "Recording started. [$(cat /tmp/recpid)]" 
+fi
