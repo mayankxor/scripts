@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+# Opens a dmenu window to select a manpage from all present on system, opening it in the terminal the script was called from
+
 choice=$(man -k . | dmenu | awk -F- '{print $1}')
 number=$(echo $choice | awk -F'(' '{print $2}' | sed -e 's/)//g')
 number=$(echo $number | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')

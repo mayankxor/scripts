@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+# Shows a dmenu prompt to select a process, the select process is terminated forcefully
+
 line="$(command ps -ef | awk '{printf "%s ", $2; for(i=8; i<=NF; i++) printf "%s%s", $i, (i<NF ? OFS : ORS)}' | cut -c1-50 | dmenu -p "Select process to kill")"
 ID=$(echo "$line" | awk '{print $1}')
 name=$(echo $line | awk '{for(i=2;i<=NF;i++)printf "%s%s", $i, (i<NF?OFS:ORS)}')

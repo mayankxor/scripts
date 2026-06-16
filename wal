@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+file="$(find $WALLPAPERSDIRECTORY -type f | shuf -n 1)"
+wal --cols16 lighten --backend wal --recursive --saturate 0.3 -n -i "$file"
+wpaperctl set "$file"

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# pad_index.sh — zero-pad numeric prefixes before '~' in filenames
+
+# zero-pad numeric prefixes before '~' in filenames
 
 set -e
 

@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/env bash
 
 dest_dir="$HOME/.archive/music/lyrics"
 
