@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+grim -g "$(slurp)" - | wl-copy
+if output=$(wl-paste); then
+  if [[ $output =~ [^[:space:]] ]]; then
+    continue
+  else
+    notify-send "Nothing copied"
+    exit 1
+  fi
+fi
+
+response=$(notify-send --action="open" "Screenshot copied to clipboard")
+case "$response" in
+  0)
+    wl-paste --type image/png | feh -
+    ;;
+esac

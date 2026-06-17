@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+projects_dir="$HOME/programming/projects"
+
+selected=$(find "$projects_dir" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort | dmenu -p "Project:")
+[ -z "$selected" ] && exit 0
+
+target_dir="$projects_dir/$selected"
+[ -d "$target_dir" ] || mkdir -p "$target_dir"
+
+session_name=$(printf '%s' "$selected" | tr ':.' '__')
+
+tmux has-session -t "=$session_name" 2>/dev/null || tmux new-session -d -s "$session_name" -c "$target_dir"
+
+setsid -f "$TERMINAL" -e tmux attach-session -t "=$session_name" >/dev/null 2>&1 &

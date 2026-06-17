@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+grim -g "$(slurp)" - | wl-copy
+if output=$(wl-paste); then
+  if [[ $output =~ [^[:space:]] ]]; then
+    continue
+  else
+    notify-send "Nothing saved"
+    exit 1
+  fi
+fi
+
+filename="$HOME/Pictures/screenshots/shot_$(date '+%B-%d-%Y-%H:%M:%S:%N').png"
+wl-paste --type image/png > $filename
+response=$(notify-send --action="open" "Screenshot copied and saved")
+case "$response" in
+  0)
+    feh $filename
+    ;;
+esac

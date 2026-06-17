@@ -17,7 +17,7 @@ copy(){
   fi
 }
 
-choice="$(ls ~/.password-store | sed 's/\.gpg$//'| dmenu)"
+choice="$(find ~/.password-store -name '*.gpg' | sed 's/.*\.password-store\/\(.*\)\.gpg$/\1/' | dmenu)"
 if [[ -z "$choice" ]]; then
   exit 1
 fi
