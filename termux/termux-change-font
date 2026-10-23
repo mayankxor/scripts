@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+choices="$(ls ~/.termux/fonts | sed 's/.ttf//')"
+choice="$(echo "$choices" | fzf)"
+cp ~/.termux/fonts/$choice.ttf ~/.termux/font.ttf
+termux-reload-settings
